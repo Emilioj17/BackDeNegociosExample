@@ -11,7 +11,7 @@ from flask import render_template
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('JAWSDB_URL')
 db.init_app(app)
 Migrate(app, db)
 app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
