@@ -31,8 +31,8 @@ def login_usuario():
     decoded_object = json.loads(request_body)
     correo = decoded_object["correo"]
     clave = decoded_object["clave"]
-    usuario = Usuario.query.filter(Usuario.correo==correo).first()
-    if usuario is not None and check_password_hash(usuario.clave, clave):
+    usuario = Usuario.query.filter_by(correo==correo).first()
+    if usuario and check_password_hash(usuario.clave, clave) == True:
         token = create_access_token(identity=clave)
         return jsonify(usuario.serialize(), token), 200
     else:
