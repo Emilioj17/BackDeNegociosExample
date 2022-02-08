@@ -34,6 +34,9 @@ def login_usuario():
     usuario = Usuario.query.filter_by(correo=correo).first()
     '''if usuario is not None and check_password_hash(usuario.clave, clave) == True: '''
     if usuario is not None:
+        print(check_password_hash(str(usuario.clave), clave))
+        print(usuario.clave)
+        print(generate_password_hash(clave))
         if check_password_hash(str(usuario.clave), clave) == True:
             token = create_access_token(identity=clave)
             return jsonify(usuario.serialize(), token), 200
