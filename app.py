@@ -32,7 +32,7 @@ def login_usuario():
     correo = decoded_object["correo"]
     clave = decoded_object["clave"]
     usuario = Usuario.query.filter_by(correo=correo).first()
-    if usuario is not None:
+    if usuario is not None: 
         token = create_access_token(identity=clave)
         return jsonify(usuario.serialize(), token), 200
     else:
