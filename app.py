@@ -36,7 +36,8 @@ def login_usuario():
         token = create_access_token(identity=clave)
         return jsonify(usuario.serialize(), token), 200
     else:
-        return jsonify({"Error": "Clave o Usuario incorrecto"}), 401
+        token = create_access_token(identity=clave)
+        return jsonify(usuario.serialize(), token), 401
 
 
 @app.route('/usuario', methods=['GET', 'POST'])
