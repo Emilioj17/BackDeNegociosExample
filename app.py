@@ -109,7 +109,7 @@ def ClientesDt(id=None):
         if(id is not None):
             clienteDt = ClienteDt.query.get(id)
             return jsonify(clienteDt.serialize()), 200
-        clientesDt = ClienteDt.query.all().limit(100)
+        clientesDt = ClienteDt.query.limit(100).all()
         clientesDt = list(
             map(lambda clienteDt: clienteDt.serialize(), clientesDt))
         return jsonify(clientesDt), 200
