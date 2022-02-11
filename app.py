@@ -32,11 +32,7 @@ def login_usuario():
     correo = decoded_object["correo"]
     clave = decoded_object["clave"]
     usuario = Usuario.query.filter_by(correo=correo).first()
-    '''if usuario is not None and check_password_hash(usuario.clave, clave) == True: '''
     if usuario is not None:
-        print(check_password_hash(str(usuario.clave), clave))
-        print(usuario.clave)
-        print(generate_password_hash(clave))
         if check_password_hash(str(usuario.clave), clave) == True:
             token = create_access_token(identity=clave)
             return jsonify(usuario.serialize(), token), 200
@@ -113,7 +109,7 @@ def ClientesDt(id=None):
         if(id is not None):
             clienteDt = ClienteDt.query.get(id)
             return jsonify(clienteDt.serialize()), 200
-        clientesDt = ClienteDt.query.all()
+        clientesDt = ClienteDt.query.all().limit(100)
         clientesDt = list(
             map(lambda clienteDt: clienteDt.serialize(), clientesDt))
         return jsonify(clientesDt), 200
