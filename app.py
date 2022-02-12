@@ -11,12 +11,12 @@ from flask import render_template
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos"
-''' os.environ.get('DB_CONNECTION_STRING') '''
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
+''' os.environ.get('DB_CONNECTION_STRING') mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos '''
 db.init_app(app)
 Migrate(app, db)
-app.config["JWT_SECRET_KEY"] = "@alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL"
-''' os.environ.get('JWT_SECRET_KEY') '''
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
+''' @alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL'''
 jwt = JWTManager(app)
 
 # Main html
@@ -108,11 +108,11 @@ def xDt(page_num=None):
     if (request.method == 'GET'):
         clientesDt= ClienteDt.query.paginate(per_page=100, page=page_num, error_out=True)
         paginas = clientesDt.pages
-        total = clientesDt.total
+        pagina = clientesDt.page
         clientesDt= clientesDt.items
         clientesDt = list(
             map(lambda clienteDt: clienteDt.serialize(), clientesDt))
-        return jsonify(clientesDt, paginas, total), 200
+        return jsonify(clientesDt, paginas, pagina), 200
 
 
 @app.route('/clienteDt', methods=['POST'])
