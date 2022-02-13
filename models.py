@@ -96,6 +96,19 @@ class ClienteDt(db.Model):
             "dt2024ID": self.get_dt2024(),
             "notas": self.get_notas()
         }
+    
+    def serializeX(self):
+        return {
+        "id": self.id,
+        "razon": self.razon,
+        "rut": self.rut,
+        "vigente": self.vigente,
+        "correo": self.correo,
+        "correoSecundario": self.correoSecundario,
+        "correoTerciario": self.correoTerciario,
+        "fono": self.fono,
+        "fechaContratacion": self.fechaContratacion
+    }
 
     def save(self):
         db.session.add(self)

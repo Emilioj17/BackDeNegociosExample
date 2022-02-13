@@ -11,12 +11,12 @@ from flask import render_template
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos"
 ''' os.environ.get('DB_CONNECTION_STRING') mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos '''
 db.init_app(app)
 Migrate(app, db)
-app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
-''' @alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL'''
+app.config["JWT_SECRET_KEY"] = "@alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL"
+'''os.environ.get('JWT_SECRET_KEY') @alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL'''
 jwt = JWTManager(app)
 
 # Main html
@@ -40,7 +40,6 @@ def login_usuario():
             return jsonify(usuario.serialize(), token), 200
     else:
         return jsonify({"Error": "Clave o Usuario incorrecto"}), 401
-
 
 @app.route('/usuario', methods=['GET', 'POST'])
 @app.route('/usuario/<int:id>', methods=['GET', 'PUT', 'DELETE'])
@@ -106,13 +105,27 @@ def usuarios(id=None):
 @app.route('/xDt/<int:page_num>', methods=['GET'])
 def xDt(page_num=None):
     if (request.method == 'GET'):
-        clientesDt= ClienteDt.query.paginate(per_page=100, page=page_num, error_out=True)
+        clientesDt= ClienteDt.query.paginate(per_page=200, page=page_num, error_out=True)
         paginas = clientesDt.pages
         pagina = clientesDt.page
         clientesDt= clientesDt.items
         clientesDt = list(
-            map(lambda clienteDt: clienteDt.serialize(), clientesDt))
+            map(lambda clienteDt: clienteDt.serializeX(), clientesDt))
         return jsonify(clientesDt, paginas, pagina), 200
+
+@app.route('/busquedaDt', methods=['POST'])
+def busquedaDt():
+    request_body = request.data
+    decoded_object = json.loads(request_body)
+    busqueda = decoded_object["busqueda"]
+    busqueda = "%{}%".format(busqueda)
+    clientesDt = ClienteDt.query.filter((ClienteDt.razon.like(busqueda)) | (ClienteDt.rut.like(busqueda)) | (ClienteDt.correo.like(busqueda)) | (ClienteDt.correoSecundario.like(busqueda)) | (ClienteDt.correoTerciario.like(busqueda)) | (ClienteDt.fono.like(busqueda)) | (ClienteDt.representante.like(busqueda)) | (ClienteDt.rutRepresentante.like(busqueda)) | (ClienteDt.id.like(busqueda))).all()
+    if clientesDt is not None:
+        clientesDt = list(
+            map(lambda clienteDt: clienteDt.serializeX(), clientesDt))
+        return jsonify(clientesDt), 200
+    else:
+        return jsonify({"Error": "Tu busqueda no ha Arrojado Resultados"}), 401
 
 
 @app.route('/clienteDt', methods=['POST'])
