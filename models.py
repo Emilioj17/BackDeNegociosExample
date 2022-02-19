@@ -52,6 +52,8 @@ class ClienteDt(db.Model):
     sacar = db.Column(db.String(5), nullable=True, default="")
     dicom = db.Column(db.String(5), nullable=True, default="")
     repetido = db.Column(db.String(10), nullable=True, default="")
+    libre = db.Column(db.String(100), nullable=True, default="")
+    mesesPagados = db.Column(db.String(20), nullable=True, default="")
     tipoPago = db.Column(db.String(10), nullable=True, default="mensual")
     dt2019ID = db.relationship(
         'Dt2019', cascade='all, delete', backref='clientesDt2019')
@@ -87,6 +89,8 @@ class ClienteDt(db.Model):
             "sacar": self.sacar,
             "dicom": self.dicom,
             "repetido": self.repetido,
+            "libre": self.libre,
+            "mesesPagados": self.mesesPagados,
             "tipoPago": self.tipoPago,
             "dt2019ID": self.get_dt2019(),
             "dt2020ID": self.get_dt2020(),
@@ -97,7 +101,8 @@ class ClienteDt(db.Model):
             "notas": self.get_notas()
         }
     
-    def serializeX(self):
+    ''' Con la siguiente funcion, se hace el filtro en la vista ampliada '''
+    def serializeX(self):  
         return {
         "id": self.id,
         "razon": self.razon,
@@ -107,7 +112,35 @@ class ClienteDt(db.Model):
         "correoSecundario": self.correoSecundario,
         "correoTerciario": self.correoTerciario,
         "fono": self.fono,
-        "fechaContratacion": self.fechaContratacion
+        "fechaContratacion": self.fechaContratacion,
+        "p": self.p,
+        "libre": self.libre,
+        "mesesPagados": self.mesesPagados,
+    }
+
+    '''La siguiente funcion, muestra info especifica del cliente en la vista de detalle'''
+    def serializeInfo(self):
+        return {
+        "id": self.id,
+        "razon": self.razon,
+        "rut": self.rut,
+        "vigente": self.vigente,
+        "correo": self.correo,
+        "correoSecundario": self.correoSecundario,
+        "correoTerciario": self.correoTerciario,
+        "fono": self.fono,
+        "whatsapp": self.whatsapp,
+        "representante": self.representante,
+        "rutRepresentante": self.rutRepresentante,
+        "fechaContratacion": self.fechaContratacion,
+        "erpyme": self.erpyme,
+        "p": self.p,
+        "sacar": self.sacar,
+        "dicom": self.dicom,
+        "repetido": self.repetido,
+        "libre": self.libre,
+        "mesesPagados": self.mesesPagados,
+        "tipoPago": self.tipoPago
     }
 
     def save(self):
@@ -164,6 +197,7 @@ class Dt2019(db.Model):
     numeroTransferencia = db.Column(db.String(100), nullable=True)
     montoPagado = db.Column(db.String(100), nullable=True)
     montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    mesesPagados = db.Column(db.String(20), nullable=False, default="1")
     facturaNumero = db.Column(db.String(100), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
     fechaIngresoPago = db.Column(db.String(100), nullable=True)
@@ -177,6 +211,7 @@ class Dt2019(db.Model):
             "numeroTransferencia": self.numeroTransferencia,
             "montoPagado": self.montoPagado,
             "montoCobrado": self.montoCobrado,
+            "mesesPagados":self.mesesPagados,
             "facturaNumero": self.facturaNumero,
             "comentario": self.comentario,
             "fechaIngresoPago": self.fechaIngresoPago,
@@ -202,6 +237,7 @@ class Dt2020(db.Model):
     numeroTransferencia = db.Column(db.String(100), nullable=True)
     montoPagado = db.Column(db.String(100), nullable=True)
     montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    mesesPagados = db.Column(db.String(20), nullable=False, default="1")
     facturaNumero = db.Column(db.String(100), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
     fechaIngresoPago = db.Column(db.String(100), nullable=True)
@@ -215,6 +251,7 @@ class Dt2020(db.Model):
             "numeroTransferencia": self.numeroTransferencia,
             "montoPagado": self.montoPagado,
             "montoCobrado": self.montoCobrado,
+            "mesesPagados":self.mesesPagados,
             "facturaNumero": self.facturaNumero,
             "comentario": self.comentario,
             "fechaIngresoPago": self.fechaIngresoPago,
@@ -240,6 +277,7 @@ class Dt2021(db.Model):
     numeroTransferencia = db.Column(db.String(100), nullable=True)
     montoPagado = db.Column(db.String(100), nullable=True)
     montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    mesesPagados = db.Column(db.String(20), nullable=False, default="1")
     facturaNumero = db.Column(db.String(100), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
     fechaIngresoPago = db.Column(db.String(100), nullable=True)
@@ -253,6 +291,7 @@ class Dt2021(db.Model):
             "numeroTransferencia": self.numeroTransferencia,
             "montoPagado": self.montoPagado,
             "montoCobrado": self.montoCobrado,
+            "mesesPagados":self.mesesPagados,
             "facturaNumero": self.facturaNumero,
             "comentario": self.comentario,
             "fechaIngresoPago": self.fechaIngresoPago,
@@ -278,6 +317,7 @@ class Dt2022(db.Model):
     numeroTransferencia = db.Column(db.String(100), nullable=True)
     montoPagado = db.Column(db.String(100), nullable=True)
     montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    mesesPagados = db.Column(db.String(20), nullable=False, default="1")
     facturaNumero = db.Column(db.String(100), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
     fechaIngresoPago = db.Column(db.String(100), nullable=True)
@@ -291,6 +331,7 @@ class Dt2022(db.Model):
             "numeroTransferencia": self.numeroTransferencia,
             "montoPagado": self.montoPagado,
             "montoCobrado": self.montoCobrado,
+            "mesesPagados":self.mesesPagados,
             "facturaNumero": self.facturaNumero,
             "comentario": self.comentario,
             "fechaIngresoPago": self.fechaIngresoPago,
@@ -316,6 +357,7 @@ class Dt2023(db.Model):
     numeroTransferencia = db.Column(db.String(100), nullable=True)
     montoPagado = db.Column(db.String(100), nullable=True)
     montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    mesesPagados = db.Column(db.String(20), nullable=False, default="1")
     facturaNumero = db.Column(db.String(100), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
     fechaIngresoPago = db.Column(db.String(100), nullable=True)
@@ -329,6 +371,7 @@ class Dt2023(db.Model):
             "numeroTransferencia": self.numeroTransferencia,
             "montoPagado": self.montoPagado,
             "montoCobrado": self.montoCobrado,
+            "mesesPagados":self.mesesPagados,
             "facturaNumero": self.facturaNumero,
             "comentario": self.comentario,
             "fechaIngresoPago": self.fechaIngresoPago,
@@ -354,6 +397,7 @@ class Dt2024(db.Model):
     numeroTransferencia = db.Column(db.String(100), nullable=True)
     montoPagado = db.Column(db.String(100), nullable=True)
     montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    mesesPagados = db.Column(db.String(20), nullable=False, default="1")
     facturaNumero = db.Column(db.String(100), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
     fechaIngresoPago = db.Column(db.String(100), nullable=True)
@@ -367,6 +411,7 @@ class Dt2024(db.Model):
             "numeroTransferencia": self.numeroTransferencia,
             "montoPagado": self.montoPagado,
             "montoCobrado": self.montoCobrado,
+            "mesesPagados":self.mesesPagados,
             "facturaNumero": self.facturaNumero,
             "comentario": self.comentario,
             "fechaIngresoPago": self.fechaIngresoPago,

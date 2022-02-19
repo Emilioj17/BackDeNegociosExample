@@ -105,7 +105,7 @@ def usuarios(id=None):
 @app.route('/xDt/<int:page_num>', methods=['GET'])
 def xDt(page_num=None):
     if (request.method == 'GET'):
-        clientesDt= ClienteDt.query.paginate(per_page=200, page=page_num, error_out=True)
+        clientesDt= ClienteDt.query.paginate(per_page=50, page=page_num, error_out=True)
         paginas = clientesDt.pages
         pagina = clientesDt.page
         clientesDt= clientesDt.items
@@ -119,11 +119,13 @@ def busquedaDt():
     decoded_object = json.loads(request_body)
     busqueda = decoded_object["busqueda"]
     busqueda = "%{}%".format(busqueda)
-    clientesDt = ClienteDt.query.filter((ClienteDt.razon.like(busqueda)) | (ClienteDt.rut.like(busqueda)) | (ClienteDt.correo.like(busqueda)) | (ClienteDt.correoSecundario.like(busqueda)) | (ClienteDt.correoTerciario.like(busqueda)) | (ClienteDt.fono.like(busqueda)) | (ClienteDt.representante.like(busqueda)) | (ClienteDt.rutRepresentante.like(busqueda)) | (ClienteDt.id.like(busqueda))).all()
+    clientesDt = ClienteDt.query.filter((ClienteDt.razon.like(busqueda)) | (ClienteDt.rut.like(busqueda)) | (ClienteDt.correo.like(busqueda)) | (ClienteDt.correoSecundario.like(busqueda)) | (ClienteDt.correoTerciario.like(busqueda)) | (ClienteDt.fono.like(busqueda)) | (ClienteDt.representante.like(busqueda)) | (ClienteDt.rutRepresentante.like(busqueda)) | (ClienteDt.id.like(busqueda)) | (ClienteDt.libre.like(busqueda))).all()
+    paginas = 1
+    pagina = 1
     if clientesDt is not None:
         clientesDt = list(
             map(lambda clienteDt: clienteDt.serializeX(), clientesDt))
-        return jsonify(clientesDt), 200
+        return jsonify(clientesDt, paginas, pagina), 200
     else:
         return jsonify({"Error": "Tu busqueda no ha Arrojado Resultados"}), 401
 
@@ -134,7 +136,7 @@ def ClientesDt(id=None):
     if (request.method == 'GET'):
         if(id is not None):
             clienteDt = ClienteDt.query.get(id)
-            return jsonify(clienteDt.serialize()), 200
+            return jsonify(clienteDt.serializeInfo()), 200
 
     if (request.method == 'POST'):
         request_body = request.data
@@ -155,6 +157,8 @@ def ClientesDt(id=None):
         sacar = decoded_object['sacar']
         dicom = decoded_object['dicom']
         repetido = decoded_object['repetido']
+        libre = decoded_object['libre']
+        mesesPagados = decoded_object['mesesPagados']
         tipoPago = decoded_object['tipoPago']
 
         clienteDt = ClienteDt()
@@ -174,6 +178,8 @@ def ClientesDt(id=None):
         clienteDt.sacar = sacar
         clienteDt.dicom = dicom
         clienteDt.repetido = repetido
+        clienteDt.libre = libre
+        clienteDt.mesesPagados = mesesPagados
         clienteDt.tipoPago = tipoPago
 
         clienteDt.save()
@@ -199,6 +205,8 @@ def ClientesDt(id=None):
         sacar = decoded_object['sacar']
         dicom = decoded_object['dicom']
         repetido = decoded_object['repetido']
+        libre = decoded_object['libre']
+        mesesPagados = decoded_object['mesesPagados']
         tipoPago = decoded_object['tipoPago']
 
         clienteDt = ClienteDt.query.get(id)
@@ -234,6 +242,10 @@ def ClientesDt(id=None):
             clienteDt.dicom = dicom
         if repetido != None:
             clienteDt.repetido = repetido
+        if libre != None:
+            clienteDt.libre = libre
+        if mesesPagados != None:
+            clienteDt.mesesPagados = mesesPagados
         if tipoPago != None:
             clienteDt.tipoPago = tipoPago
 
@@ -268,6 +280,7 @@ def Dt2019s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
         fechaIngresoPago = decoded_object['fechaIngresoPago']
@@ -278,6 +291,7 @@ def Dt2019s(id=None):
         detallesPago.numeroTransferencia = numeroTransferencia
         detallesPago.montoPagado = montoPagado
         detallesPago.montoCobrado = montoCobrado
+        detallesPago.mesesPagados = mesesPagados
         detallesPago.facturaNumero = facturaNumero
         detallesPago.comentario = comentario
         detallesPago.fechaIngresoPago = fechaIngresoPago
@@ -294,6 +308,7 @@ def Dt2019s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
 
@@ -311,6 +326,8 @@ def Dt2019s(id=None):
             dtPago2019.comentario = comentario
         if facturaNumero != None:
             dtPago2019.facturaNumero = facturaNumero
+        if mesesPagados != None:
+            dtPago2019.mesesPagados = mesesPagados
 
         dtPago2019.update()
 
@@ -343,6 +360,7 @@ def Dt2020s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
         fechaIngresoPago = decoded_object['fechaIngresoPago']
@@ -353,6 +371,7 @@ def Dt2020s(id=None):
         detallePago.numeroTransferencia = numeroTransferencia
         detallePago.montoPagado = montoPagado
         detallePago.montoCobrado = montoCobrado
+        detallePago.mesesPagados = mesesPagados
         detallePago.facturaNumero = facturaNumero
         detallePago.comentario = comentario
         detallePago.fechaIngresoPago = fechaIngresoPago
@@ -369,6 +388,7 @@ def Dt2020s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
 
@@ -386,6 +406,8 @@ def Dt2020s(id=None):
             dtPago2020.facturaNumero = facturaNumero
         if comentario != None:
             dtPago2020.comentario = comentario
+        if mesesPagados != None:
+            dtPago2020.mesesPagados = mesesPagados
 
         dtPago2020.update()
 
@@ -418,6 +440,7 @@ def Dt2021s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
         fechaIngresoPago = decoded_object['fechaIngresoPago']
@@ -428,6 +451,7 @@ def Dt2021s(id=None):
         detallePago.numeroTransferencia = numeroTransferencia
         detallePago.montoPagado = montoPagado
         detallePago.montoCobrado = montoCobrado
+        detallePago.mesesPagados = mesesPagados
         detallePago.facturaNumero = facturaNumero
         detallePago.comentario = comentario
         detallePago.fechaIngresoPago = fechaIngresoPago
@@ -444,6 +468,7 @@ def Dt2021s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
 
@@ -461,6 +486,8 @@ def Dt2021s(id=None):
             dtPago2021.facturaNumero = facturaNumero
         if comentario != None:
             dtPago2021.comentario = comentario
+        if mesesPagados != None:
+            dtPago2021.mesesPagados = mesesPagados
 
         dtPago2021.update()
 
@@ -493,6 +520,7 @@ def Dt2022s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
         fechaIngresoPago = decoded_object['fechaIngresoPago']
@@ -503,6 +531,7 @@ def Dt2022s(id=None):
         detallePago.numeroTransferencia = numeroTransferencia
         detallePago.montoPagado = montoPagado
         detallePago.montoCobrado = montoCobrado
+        detallePago.mesesPagados = mesesPagados
         detallePago.facturaNumero = facturaNumero
         detallePago.comentario = comentario
         detallePago.fechaIngresoPago = fechaIngresoPago
@@ -519,6 +548,7 @@ def Dt2022s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
 
@@ -536,6 +566,8 @@ def Dt2022s(id=None):
             dtPago2022.facturaNumero = facturaNumero
         if comentario != None:
             dtPago2022.comentario = comentario
+        if mesesPagados != None:
+            dtPago2022.mesesPagados = mesesPagados
 
         dtPago2022.update()
 
@@ -568,6 +600,7 @@ def Dt2023s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
         fechaIngresoPago = decoded_object['fechaIngresoPago']
@@ -578,6 +611,7 @@ def Dt2023s(id=None):
         detallePago.numeroTransferencia = numeroTransferencia
         detallePago.montoPagado = montoPagado
         detallePago.montoCobrado = montoCobrado
+        detallePago.mesesPagados = mesesPagados
         detallePago.facturaNumero = facturaNumero
         detallePago.comentario = comentario
         detallePago.fechaIngresoPago = fechaIngresoPago
@@ -594,6 +628,7 @@ def Dt2023s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
 
@@ -611,6 +646,8 @@ def Dt2023s(id=None):
             dtPago2023.facturaNumero = facturaNumero
         if comentario != None:
             dtPago2023.comentario = comentario
+        if mesesPagados != None:
+            dtPago2023.mesesPagados = mesesPagados
 
         dtPago2023.update()
 
@@ -643,6 +680,7 @@ def Dt2024s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
         fechaIngresoPago = decoded_object['fechaIngresoPago']
@@ -653,6 +691,7 @@ def Dt2024s(id=None):
         detallePago.numeroTransferencia = numeroTransferencia
         detallePago.montoPagado = montoPagado
         detallePago.montoCobrado = montoCobrado
+        detallePago.mesesPagados = mesesPagados
         detallePago.facturaNumero = facturaNumero
         detallePago.comentario = comentario
         detallePago.fechaIngresoPago = fechaIngresoPago
@@ -669,6 +708,7 @@ def Dt2024s(id=None):
         numeroTransferencia = decoded_object['numeroTransferencia']
         montoPagado = decoded_object['montoPagado']
         montoCobrado = decoded_object['montoCobrado']
+        mesesPagados = decoded_object['mesesPagados']
         facturaNumero = decoded_object['facturaNumero']
         comentario = decoded_object['comentario']
 
@@ -686,6 +726,8 @@ def Dt2024s(id=None):
             dtPago2024.facturaNumero = facturaNumero
         if comentario != None:
             dtPago2024.comentario = comentario
+        if mesesPagados != None:
+            dtPago2024.mesesPagados = mesesPagados
 
         dtPago2024.update()
 
