@@ -11,11 +11,11 @@ from flask import render_template
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
 ''' os.environ.get('DB_CONNECTION_STRING') mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos '''
 db.init_app(app)
 Migrate(app, db)
-app.config["JWT_SECRET_KEY"] = "@alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL"
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
 '''os.environ.get('JWT_SECRET_KEY') @alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL'''
 jwt = JWTManager(app)
 
@@ -105,7 +105,7 @@ def usuarios(id=None):
 @app.route('/xDt/<int:page_num>', methods=['GET'])
 def xDt(page_num=None):
     if (request.method == 'GET'):
-        clientesDt= ClienteDt.query.paginate(per_page=50, page=page_num, error_out=True)
+        clientesDt= ClienteDt.query.paginate(per_page=100, page=page_num, error_out=True)
         paginas = clientesDt.pages
         pagina = clientesDt.page
         clientesDt= clientesDt.items
@@ -286,20 +286,20 @@ def Dt2019s(id=None):
         fechaIngresoPago = decoded_object['fechaIngresoPago']
         clienteDtid = decoded_object['clienteDtid']
 
-        detallesPago = Dt2019()
-        detallesPago.mes = mes
-        detallesPago.numeroTransferencia = numeroTransferencia
-        detallesPago.montoPagado = montoPagado
-        detallesPago.montoCobrado = montoCobrado
-        detallesPago.mesesPagados = mesesPagados
-        detallesPago.facturaNumero = facturaNumero
-        detallesPago.comentario = comentario
-        detallesPago.fechaIngresoPago = fechaIngresoPago
-        detallesPago.clienteDtid = clienteDtid
+        dtPago2019 = Dt2019()
+        dtPago2019.mes = mes
+        dtPago2019.numeroTransferencia = numeroTransferencia
+        dtPago2019.montoPagado = montoPagado
+        dtPago2019.montoCobrado = montoCobrado
+        dtPago2019.mesesPagados = mesesPagados
+        dtPago2019.facturaNumero = facturaNumero
+        dtPago2019.comentario = comentario
+        dtPago2019.fechaIngresoPago = fechaIngresoPago
+        dtPago2019.clienteDtid = clienteDtid
 
-        detallesPago.save()
+        dtPago2019.save()
 
-        return jsonify(detallesPago.serialize()), 201
+        return jsonify(dtPago2019.serialize()), 201
 
     if (request.method == 'PUT'):
         request_body = request.data
@@ -366,20 +366,20 @@ def Dt2020s(id=None):
         fechaIngresoPago = decoded_object['fechaIngresoPago']
         clienteDtid = decoded_object['clienteDtid']
 
-        detallePago = Dt2020()
-        detallePago.mes = mes
-        detallePago.numeroTransferencia = numeroTransferencia
-        detallePago.montoPagado = montoPagado
-        detallePago.montoCobrado = montoCobrado
-        detallePago.mesesPagados = mesesPagados
-        detallePago.facturaNumero = facturaNumero
-        detallePago.comentario = comentario
-        detallePago.fechaIngresoPago = fechaIngresoPago
-        detallePago.clienteDtid = clienteDtid
+        dtPago2020 = Dt2020()
+        dtPago2020.mes = mes
+        dtPago2020.numeroTransferencia = numeroTransferencia
+        dtPago2020.montoPagado = montoPagado
+        dtPago2020.montoCobrado = montoCobrado
+        dtPago2020.mesesPagados = mesesPagados
+        dtPago2020.facturaNumero = facturaNumero
+        dtPago2020.comentario = comentario
+        dtPago2020.fechaIngresoPago = fechaIngresoPago
+        dtPago2020.clienteDtid = clienteDtid
 
-        detallePago.save()
+        dtPago2020.save()
 
-        return jsonify(detallePago.serialize()), 201
+        return jsonify(dtPago2020.serialize()), 201
 
     if (request.method == 'PUT'):
         request_body = request.data
@@ -446,20 +446,20 @@ def Dt2021s(id=None):
         fechaIngresoPago = decoded_object['fechaIngresoPago']
         clienteDtid = decoded_object['clienteDtid']
 
-        detallePago = Dt2021()
-        detallePago.mes = mes
-        detallePago.numeroTransferencia = numeroTransferencia
-        detallePago.montoPagado = montoPagado
-        detallePago.montoCobrado = montoCobrado
-        detallePago.mesesPagados = mesesPagados
-        detallePago.facturaNumero = facturaNumero
-        detallePago.comentario = comentario
-        detallePago.fechaIngresoPago = fechaIngresoPago
-        detallePago.clienteDtid = clienteDtid
+        dtPago2021 = Dt2021()
+        dtPago2021.mes = mes
+        dtPago2021.numeroTransferencia = numeroTransferencia
+        dtPago2021.montoPagado = montoPagado
+        dtPago2021.montoCobrado = montoCobrado
+        dtPago2021.mesesPagados = mesesPagados
+        dtPago2021.facturaNumero = facturaNumero
+        dtPago2021.comentario = comentario
+        dtPago2021.fechaIngresoPago = fechaIngresoPago
+        dtPago2021.clienteDtid = clienteDtid
 
-        detallePago.save()
+        dtPago2021.save()
 
-        return jsonify(detallePago.serialize()), 201
+        return jsonify(dtPago2021.serialize()), 201
 
     if (request.method == 'PUT'):
         request_body = request.data
@@ -526,20 +526,20 @@ def Dt2022s(id=None):
         fechaIngresoPago = decoded_object['fechaIngresoPago']
         clienteDtid = decoded_object['clienteDtid']
 
-        detallePago = Dt2022()
-        detallePago.mes = mes
-        detallePago.numeroTransferencia = numeroTransferencia
-        detallePago.montoPagado = montoPagado
-        detallePago.montoCobrado = montoCobrado
-        detallePago.mesesPagados = mesesPagados
-        detallePago.facturaNumero = facturaNumero
-        detallePago.comentario = comentario
-        detallePago.fechaIngresoPago = fechaIngresoPago
-        detallePago.clienteDtid = clienteDtid
+        dtPago2022 = Dt2022()
+        dtPago2022.mes = mes
+        dtPago2022.numeroTransferencia = numeroTransferencia
+        dtPago2022.montoPagado = montoPagado
+        dtPago2022.montoCobrado = montoCobrado
+        dtPago2022.mesesPagados = mesesPagados
+        dtPago2022.facturaNumero = facturaNumero
+        dtPago2022.comentario = comentario
+        dtPago2022.fechaIngresoPago = fechaIngresoPago
+        dtPago2022.clienteDtid = clienteDtid
 
-        detallePago.save()
+        dtPago2022.save()
 
-        return jsonify(detallePago.serialize()), 201
+        return jsonify(dtPago2022.serialize()), 201
 
     if (request.method == 'PUT'):
         request_body = request.data
@@ -606,20 +606,20 @@ def Dt2023s(id=None):
         fechaIngresoPago = decoded_object['fechaIngresoPago']
         clienteDtid = decoded_object['clienteDtid']
 
-        detallePago = Dt2023()
-        detallePago.mes = mes
-        detallePago.numeroTransferencia = numeroTransferencia
-        detallePago.montoPagado = montoPagado
-        detallePago.montoCobrado = montoCobrado
-        detallePago.mesesPagados = mesesPagados
-        detallePago.facturaNumero = facturaNumero
-        detallePago.comentario = comentario
-        detallePago.fechaIngresoPago = fechaIngresoPago
-        detallePago.clienteDtid = clienteDtid
+        dtPago2023 = Dt2023()
+        dtPago2023.mes = mes
+        dtPago2023.numeroTransferencia = numeroTransferencia
+        dtPago2023.montoPagado = montoPagado
+        dtPago2023.montoCobrado = montoCobrado
+        dtPago2023.mesesPagados = mesesPagados
+        dtPago2023.facturaNumero = facturaNumero
+        dtPago2023.comentario = comentario
+        dtPago2023.fechaIngresoPago = fechaIngresoPago
+        dtPago2023.clienteDtid = clienteDtid
 
-        detallePago.save()
+        dtPago2023.save()
 
-        return jsonify(detallePago.serialize()), 201
+        return jsonify(dtPago2023.serialize()), 201
 
     if (request.method == 'PUT'):
         request_body = request.data
@@ -686,20 +686,20 @@ def Dt2024s(id=None):
         fechaIngresoPago = decoded_object['fechaIngresoPago']
         clienteDtid = decoded_object['clienteDtid']
 
-        detallePago = Dt2024()
-        detallePago.mes = mes
-        detallePago.numeroTransferencia = numeroTransferencia
-        detallePago.montoPagado = montoPagado
-        detallePago.montoCobrado = montoCobrado
-        detallePago.mesesPagados = mesesPagados
-        detallePago.facturaNumero = facturaNumero
-        detallePago.comentario = comentario
-        detallePago.fechaIngresoPago = fechaIngresoPago
-        detallePago.clienteDtid = clienteDtid
+        dtPago2024 = Dt2024()
+        dtPago2024.mes = mes
+        dtPago2024.numeroTransferencia = numeroTransferencia
+        dtPago2024.montoPagado = montoPagado
+        dtPago2024.montoCobrado = montoCobrado
+        dtPago2024.mesesPagados = mesesPagados
+        dtPago2024.facturaNumero = facturaNumero
+        dtPago2024.comentario = comentario
+        dtPago2024.fechaIngresoPago = fechaIngresoPago
+        dtPago2024.clienteDtid = clienteDtid
 
-        detallePago.save()
+        dtPago2024.save()
 
-        return jsonify(detallePago.serialize()), 201
+        return jsonify(dtPago2024.serialize()), 201
 
     if (request.method == 'PUT'):
         request_body = request.data

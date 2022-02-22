@@ -5,10 +5,10 @@ db = SQLAlchemy()
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
     id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(100), nullable=False)
-    apellido = db.Column(db.String(100), nullable=False)
-    correo = db.Column(db.String(100), nullable=False, unique=True)
-    clave = db.Column(db.String(20), nullable=False)
+    nombre = db.Column(db.String(30), nullable=False)
+    apellido = db.Column(db.String(30), nullable=False)
+    correo = db.Column(db.String(30), nullable=False, unique=True)
+    clave = db.Column(db.String(200), nullable=False)
     tipo = db.Column(db.String(20), nullable=False)
 
     def serialize(self):
@@ -37,24 +37,24 @@ class ClienteDt(db.Model):
     __tablename__ = 'clientesDt'
     id = db.Column(db.Integer, primary_key=True)
     razon = db.Column(db.String(100), nullable=False)
-    rut = db.Column(db.String(100), nullable=False)
-    vigente = db.Column(db.String(100), nullable=True, default="true")
-    correo = db.Column(db.String(100), nullable=False)
-    correoSecundario = db.Column(db.String(100), nullable=True)
-    correoTerciario = db.Column(db.String(100), nullable=True)
-    fono = db.Column(db.String(100), nullable=True)
-    whatsapp = db.Column(db.String(100), nullable=True)
+    rut = db.Column(db.String(20), nullable=False)
+    vigente = db.Column(db.String(10), nullable=True, default="Si")
+    correo = db.Column(db.String(50), nullable=False)
+    correoSecundario = db.Column(db.String(50), nullable=True)
+    correoTerciario = db.Column(db.String(50), nullable=True)
+    fono = db.Column(db.String(10), nullable=True)
+    whatsapp = db.Column(db.String(10), nullable=True)
     representante = db.Column(db.String(100), nullable=False)
-    rutRepresentante = db.Column(db.String(100), nullable=False)
-    fechaContratacion = db.Column(db.String(100), nullable=False)
-    erpyme = db.Column(db.String(100), nullable=True, default="false")
-    p = db.Column(db.String(5), nullable=True, default="")
-    sacar = db.Column(db.String(5), nullable=True, default="")
-    dicom = db.Column(db.String(5), nullable=True, default="")
-    repetido = db.Column(db.String(10), nullable=True, default="")
-    libre = db.Column(db.String(100), nullable=True, default="")
-    mesesPagados = db.Column(db.String(20), nullable=True, default="")
-    tipoPago = db.Column(db.String(10), nullable=True, default="mensual")
+    rutRepresentante = db.Column(db.String(20), nullable=False)
+    fechaContratacion = db.Column(db.String(50), nullable=False)
+    erpyme = db.Column(db.String(10), nullable=True, default="No")
+    p = db.Column(db.String(10), nullable=True, default="No")
+    sacar = db.Column(db.String(10), nullable=True, default="No")
+    dicom = db.Column(db.String(10), nullable=True, default="No")
+    repetido = db.Column(db.String(10), nullable=True, default="No")
+    libre = db.Column(db.String(200), nullable=True)
+    mesesPagados = db.Column(db.String(20), nullable=True)
+    tipoPago = db.Column(db.String(10), nullable=True, default="Mensual")
     dt2019ID = db.relationship(
         'Dt2019', cascade='all, delete', backref='clientesDt2019')
     dt2020ID = db.relationship(
@@ -193,14 +193,14 @@ class ClienteDt(db.Model):
 class Dt2019(db.Model):
     __tablename__ = 'dt2019s'
     id = db.Column(db.Integer, primary_key=True)
-    mes = db.Column(db.String(100), nullable=False)
+    mes = db.Column(db.String(10), nullable=False)
     numeroTransferencia = db.Column(db.String(100), nullable=True)
-    montoPagado = db.Column(db.String(100), nullable=True)
+    montoPagado = db.Column(db.String(50), nullable=True)
     montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
     mesesPagados = db.Column(db.String(20), nullable=False, default="1")
-    facturaNumero = db.Column(db.String(100), nullable=True)
+    facturaNumero = db.Column(db.String(30), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
-    fechaIngresoPago = db.Column(db.String(100), nullable=True)
+    fechaIngresoPago = db.Column(db.String(30), nullable=True)
     clienteDtid = db.Column(db.Integer, db.ForeignKey(
         'clientesDt.id', ondelete='CASCADE'))
 
@@ -233,14 +233,14 @@ class Dt2019(db.Model):
 class Dt2020(db.Model):
     __tablename__ = 'dt2020s'
     id = db.Column(db.Integer, primary_key=True)
-    mes = db.Column(db.String(100), nullable=False)
+    mes = db.Column(db.String(10), nullable=False)
     numeroTransferencia = db.Column(db.String(100), nullable=True)
-    montoPagado = db.Column(db.String(100), nullable=True)
-    montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    montoPagado = db.Column(db.String(50), nullable=True)
+    montoCobrado = db.Column(db.String(50), nullable=False, default="9900")
     mesesPagados = db.Column(db.String(20), nullable=False, default="1")
-    facturaNumero = db.Column(db.String(100), nullable=True)
+    facturaNumero = db.Column(db.String(30), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
-    fechaIngresoPago = db.Column(db.String(100), nullable=True)
+    fechaIngresoPago = db.Column(db.String(30), nullable=True)
     clienteDtid = db.Column(db.Integer, db.ForeignKey(
         'clientesDt.id', ondelete='CASCADE'))
 
@@ -273,14 +273,14 @@ class Dt2020(db.Model):
 class Dt2021(db.Model):
     __tablename__ = 'dt2021s'
     id = db.Column(db.Integer, primary_key=True)
-    mes = db.Column(db.String(100), nullable=False)
+    mes = db.Column(db.String(10), nullable=False)
     numeroTransferencia = db.Column(db.String(100), nullable=True)
-    montoPagado = db.Column(db.String(100), nullable=True)
-    montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    montoPagado = db.Column(db.String(50), nullable=True)
+    montoCobrado = db.Column(db.String(50), nullable=False, default="9900")
     mesesPagados = db.Column(db.String(20), nullable=False, default="1")
-    facturaNumero = db.Column(db.String(100), nullable=True)
+    facturaNumero = db.Column(db.String(30), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
-    fechaIngresoPago = db.Column(db.String(100), nullable=True)
+    fechaIngresoPago = db.Column(db.String(30), nullable=True)
     clienteDtid = db.Column(db.Integer, db.ForeignKey(
         'clientesDt.id', ondelete='CASCADE'))
 
@@ -313,14 +313,14 @@ class Dt2021(db.Model):
 class Dt2022(db.Model):
     __tablename__ = 'dt2022s'
     id = db.Column(db.Integer, primary_key=True)
-    mes = db.Column(db.String(100), nullable=False)
+    mes = db.Column(db.String(10), nullable=False)
     numeroTransferencia = db.Column(db.String(100), nullable=True)
-    montoPagado = db.Column(db.String(100), nullable=True)
-    montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    montoPagado = db.Column(db.String(50), nullable=True)
+    montoCobrado = db.Column(db.String(50), nullable=False, default="9900")
     mesesPagados = db.Column(db.String(20), nullable=False, default="1")
-    facturaNumero = db.Column(db.String(100), nullable=True)
+    facturaNumero = db.Column(db.String(30), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
-    fechaIngresoPago = db.Column(db.String(100), nullable=True)
+    fechaIngresoPago = db.Column(db.String(30), nullable=True)
     clienteDtid = db.Column(db.Integer, db.ForeignKey(
         'clientesDt.id', ondelete='CASCADE'))
 
@@ -353,14 +353,14 @@ class Dt2022(db.Model):
 class Dt2023(db.Model):
     __tablename__ = 'dt2023s'
     id = db.Column(db.Integer, primary_key=True)
-    mes = db.Column(db.String(100), nullable=False)
+    mes = db.Column(db.String(10), nullable=False)
     numeroTransferencia = db.Column(db.String(100), nullable=True)
-    montoPagado = db.Column(db.String(100), nullable=True)
-    montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    montoPagado = db.Column(db.String(50), nullable=True)
+    montoCobrado = db.Column(db.String(50), nullable=False, default="9900")
     mesesPagados = db.Column(db.String(20), nullable=False, default="1")
-    facturaNumero = db.Column(db.String(100), nullable=True)
+    facturaNumero = db.Column(db.String(30), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
-    fechaIngresoPago = db.Column(db.String(100), nullable=True)
+    fechaIngresoPago = db.Column(db.String(30), nullable=True)
     clienteDtid = db.Column(db.Integer, db.ForeignKey(
         'clientesDt.id', ondelete='CASCADE'))
 
@@ -393,14 +393,14 @@ class Dt2023(db.Model):
 class Dt2024(db.Model):
     __tablename__ = 'dt2024s'
     id = db.Column(db.Integer, primary_key=True)
-    mes = db.Column(db.String(100), nullable=False)
+    mes = db.Column(db.String(10), nullable=False)
     numeroTransferencia = db.Column(db.String(100), nullable=True)
-    montoPagado = db.Column(db.String(100), nullable=True)
-    montoCobrado = db.Column(db.String(100), nullable=False, default="9900")
+    montoPagado = db.Column(db.String(50), nullable=True)
+    montoCobrado = db.Column(db.String(50), nullable=False, default="9900")
     mesesPagados = db.Column(db.String(20), nullable=False, default="1")
-    facturaNumero = db.Column(db.String(100), nullable=True)
+    facturaNumero = db.Column(db.String(30), nullable=True)
     comentario = db.Column(db.String(100), nullable=True)
-    fechaIngresoPago = db.Column(db.String(100), nullable=True)
+    fechaIngresoPago = db.Column(db.String(30), nullable=True)
     clienteDtid = db.Column(db.Integer, db.ForeignKey(
         'clientesDt.id', ondelete='CASCADE'))
 
@@ -434,7 +434,7 @@ class Nota(db.Model):
     __tablename__ = 'notas'
     id = db.Column(db.Integer, primary_key=True)
     comentario = db.Column(db.String(500), nullable=False)
-    fechaComentario = db.Column(db.String(500), nullable=False)
+    fechaComentario = db.Column(db.String(20), nullable=False)
     clienteDtid = db.Column(db.Integer, db.ForeignKey(
         'clientesDt.id', ondelete='CASCADE'))
 
