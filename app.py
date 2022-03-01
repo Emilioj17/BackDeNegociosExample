@@ -105,7 +105,7 @@ def usuarios(id=None):
 @app.route('/xDt/<int:page_num>', methods=['GET'])
 def xDt(page_num=None):
     if (request.method == 'GET'):
-        clientesDt= ClienteDt.query.paginate(per_page=100, page=page_num, error_out=True)
+        clientesDt= ClienteDt.query.paginate(per_page=1000, page=page_num, error_out=True)
         paginas = clientesDt.pages
         pagina = clientesDt.page
         clientesDt= clientesDt.items
