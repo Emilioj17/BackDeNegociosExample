@@ -11,11 +11,11 @@ from flask import render_template
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos"
 ''' os.environ.get('DB_CONNECTION_STRING') mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos '''
 db.init_app(app)
 Migrate(app, db)
-app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
+app.config["JWT_SECRET_KEY"] = "@alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL"
 '''os.environ.get('JWT_SECRET_KEY') @alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL'''
 jwt = JWTManager(app)
 
@@ -102,6 +102,7 @@ def usuarios(id=None):
         usuario.delete()
         return jsonify({"success": "User deleted"}), 200
 
+''' Esta es la ruta que genera los clientes en la Vista Ampliada de Direccion Tributaria '''
 @app.route('/xDt/<int:page_num>', methods=['GET'])
 def xDt(page_num=None):
     if (request.method == 'GET'):
@@ -113,7 +114,8 @@ def xDt(page_num=None):
             map(lambda clienteDt: clienteDt.serializeX(), clientesDt))
         return jsonify(clientesDt, paginas, pagina), 200
 
-@app.route('/busquedaDt', methods=['POST'])
+''' Esta es la ruta de Busqueda para la Barra de Busqueda. '''
+@app.route('/busquedaDt', methods=['POST'])  
 def busquedaDt():
     request_body = request.data
     decoded_object = json.loads(request_body)
@@ -129,6 +131,48 @@ def busquedaDt():
     else:
         return jsonify({"Error": "Tu busqueda no ha Arrojado Resultados"}), 401
 
+''' Esta es la Ruta para hacer Filtros en Vista Ampliada '''
+@app.route('/filtroDt', methods=['POST'])  
+def filtroDt():
+    request_body = request.data
+    decoded_object = json.loads(request_body)
+    vigente = decoded_object['vigente']
+    whatsapp = decoded_object['whatsapp']
+    erpyme = decoded_object['erpyme']
+    p = decoded_object['p']
+    sacar = decoded_object['sacar']
+    dicom = decoded_object['dicom']
+    repetido = decoded_object['repetido']
+    tipoPago = decoded_object['tipoPago']
+
+    if vigente != None:
+        clientesDt = ClienteDt.query.filter(ClienteDt.vigente.like(vigente)).all()
+    if whatsapp != None:
+        clientesDt = ClienteDt.query.filter(ClienteDt.whatsapp.like(whatsapp)).all()
+    if erpyme != None:
+        clientesDt = ClienteDt.query.filter(ClienteDt.erpyme.like(erpyme)).all()
+    if p != None:
+        clientesDt = ClienteDt.query.filter(ClienteDt.p.like(p)).all()
+    if sacar != None:
+        clientesDt = ClienteDt.query.filter(ClienteDt.sacar.like(sacar)).all()
+    if dicom != None:
+        clientesDt = ClienteDt.query.filter(ClienteDt.dicom.like(dicom)).all()
+    if repetido != None:
+        clientesDt = ClienteDt.query.filter(ClienteDt.repetido.like(repetido)).all()
+    if tipoPago != None:
+        clientesDt = ClienteDt.query.filter(ClienteDt.tipoPago.like(tipoPago)).all()
+
+    ''' print(filtrado) '''
+    ''' filtrado = "%{}%".format(filtrado) '''
+    ''' clientesDt = ClienteDt.query.filter(ClienteDt.vigente.like(filtrado)).all() '''
+    paginas = 1
+    pagina = 1
+    if clientesDt is not None:
+        clientesDt = list(
+            map(lambda clienteDt: clienteDt.serializeInfo(), clientesDt))
+        return jsonify(clientesDt, paginas, pagina), 200
+    else:
+        return jsonify({"Error": "Tu filtrado no ha Arrojado Resultados"}), 401
 
 @app.route('/clienteDt', methods=['POST'])
 @app.route('/clienteDt/<int:id>', methods=['GET', 'PUT', 'DELETE'])
