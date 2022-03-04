@@ -11,11 +11,11 @@ from flask import render_template
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
 ''' os.environ.get('DB_CONNECTION_STRING') mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos '''
 db.init_app(app)
 Migrate(app, db)
-app.config["JWT_SECRET_KEY"] = "@alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL"
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
 '''os.environ.get('JWT_SECRET_KEY') @alfa123@254alfacentaurizxcKKvbnm@123456789ASDFGHJKL'''
 jwt = JWTManager(app)
 
@@ -134,8 +134,11 @@ def busquedaDt():
 ''' Esta es la Ruta para hacer Filtros en Vista Ampliada '''
 @app.route('/filtroDt', methods=['POST'])  
 def filtroDt():
+    print("Hola")
     request_body = request.data
+    print(request_body)
     decoded_object = json.loads(request_body)
+    print(decoded_object);
     vigente = decoded_object['vigente']
     whatsapp = decoded_object['whatsapp']
     erpyme = decoded_object['erpyme']
