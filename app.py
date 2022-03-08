@@ -12,7 +12,7 @@ from flask import render_template
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/contabilidad"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos"
 ''' os.environ.get('DB_CONNECTION_STRING') mysql+mysqlconnector://admin:curso2021@database-1.clcxl18xumje.us-east-1.rds.amazonaws.com/basedatos '''
 db.init_app(app)
 Migrate(app, db)
