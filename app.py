@@ -822,7 +822,7 @@ def Notas(id=None):
 @app.route('/xContabilidad/<int:page_num>', methods=['GET'])
 def xContabilidad(page_num=None):
     if (request.method == 'GET'):
-        clientesContabilidad= ClienteContabilidad.query.paginate(per_page=1000, page=page_num, error_out=True)
+        clientesContabilidad= ClienteContabilidad.query.paginate(per_page=50, page=page_num, error_out=True)
         paginas = clientesContabilidad.pages
         pagina = clientesContabilidad.page
         clientesContabilidad= clientesContabilidad.items
@@ -1054,7 +1054,7 @@ def pagosContabilidad(id=None):
 def NotasContabilidad(id=None):
     if (request.method == 'GET'):
         if(id is not None):
-            notas = NotaContabilidad.query.filter_by(clienteDtid=id).all()
+            notas = NotaContabilidad.query.filter_by(clienteContabilidadid=id).all()
             notas = list(
                 map(lambda nota: nota.serialize(), notas))
             return jsonify(notas), 200
