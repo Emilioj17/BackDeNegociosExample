@@ -822,7 +822,7 @@ def Notas(id=None):
 @app.route('/xContabilidad/<int:page_num>', methods=['GET'])
 def xContabilidad(page_num=None):
     if (request.method == 'GET'):
-        clientesContabilidad= ClienteContabilidad.query.paginate(per_page=50, page=page_num, error_out=True)
+        clientesContabilidad= ClienteContabilidad.query.paginate(per_page=500, page=page_num, error_out=True)
         paginas = clientesContabilidad.pages
         pagina = clientesContabilidad.page
         clientesContabilidad= clientesContabilidad.items
