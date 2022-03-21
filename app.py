@@ -842,7 +842,7 @@ def busquedaContabilidad():
     pagina = 1
     if clientesContabilidad is not None:
         clientesContabilidad = list(
-            map(lambda clienteContabilidad: clienteContabilidad.serializeInfo(), clientesContabilidad))
+            map(lambda clienteContabilidad: clienteContabilidad.serialize(), clientesContabilidad))
         return jsonify(clientesContabilidad, paginas, pagina), 200
     else:
         return jsonify({"Error": "Tu busqueda no ha Arrojado Resultados"}), 401
@@ -873,7 +873,7 @@ def filtroContabilidad():
     pagina = 1
     if clientesContabilidad is not None:
         clientesContabilidad = list(
-            map(lambda clienteDt: clienteDt.serializeInfo(), clientesContabilidad))
+            map(lambda clienteDt: clienteDt.serialize(), clientesContabilidad))
         return jsonify(clientesContabilidad, paginas, pagina), 200
     else:
         return jsonify({"Error": "Tu filtrado no ha Arrojado Resultados"}), 401
@@ -884,7 +884,7 @@ def clientesContabilidad(id=None):
     if (request.method == 'GET'):
         if(id is not None):
             clienteContabilidad = ClienteContabilidad.query.get(id)
-            return jsonify(clienteContabilidad.serializeInfo()), 200
+            return jsonify(clienteContabilidad.serialize()), 200
 
     if (request.method == 'POST'):
         request_body = request.data
