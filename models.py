@@ -115,6 +115,7 @@ class ClienteDt(db.Model):
         "fono": self.fono,
         "fechaContratacion": self.fechaContratacion,
         "p": self.p,
+        "sacar": self.sacar,
         "libre": self.libre,
         "mesesPagados": self.mesesPagados,
     }
